@@ -1,6 +1,6 @@
 {
   "name": "stream-tag",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "A tagged template literal utility for Node streams",
   "main": "dist/lib/index.js",
   "module": "dist/es/index.js",
