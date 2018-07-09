@@ -68,6 +68,26 @@ describe('streamTag', () => {
     });
   });
 
+  it('handles deferred interolations correctly', () => {
+    const stream = streamTag`
+      ${() => 'test'}
+      ${() => Buffer.from('test')}
+      ${() => Promise.resolve('test')}
+      ${() => streamTag`test`}
+    `;
+
+    const output = `
+      test
+      test
+      test
+      test
+    `
+
+    return streamToString(stream).then(string => {
+      expect(string).toBe(output);
+    });
+  });
+
   describe('React SSR Integration', () => {
     it('correctly interpolates renderToNodeStream', () => {
       const tree = createElement('div', { className: 'test' }, (

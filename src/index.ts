@@ -6,10 +6,14 @@ export type RawInterpolation =
   | number
   | Buffer
 
-export type Interpolation =
+export type ValInterpolation =
   | RawInterpolation
   | ReadableStream
   | Promise<RawInterpolation>;
+
+export type Interpolation =
+  | ValInterpolation
+  | (() => ValInterpolation);
 
 const isStream = (arg: any): arg is ReadableStream => (
   arg && typeof arg === 'object' && typeof arg.pipe === 'function'
@@ -119,7 +123,11 @@ export class ReadableTagStream extends ReadableStream {
         } else if (isString) {
           nextString = this.strings[index / 2];
         } else {
-          const interpolation = this.interpolations[(index - 1) / 2];
+          let interpolation = this.interpolations[(index - 1) / 2];
+          if (typeof interpolation === 'function') {
+            interpolation = interpolation();
+          }
+
           if (isPromise(interpolation)) {
             return this.queuePromise(interpolation);
           } else if (isStream(interpolation)) {
