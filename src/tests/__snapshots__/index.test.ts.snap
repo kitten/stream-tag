@@ -1,0 +1,11 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`streamTag React SSR Integration correctly interpolates renderToNodeStream 1`] = `
+"
+        <html>
+          <body>
+            <div class=\\"test\\" data-reactroot=\\"\\"><h1>Hello World!</h1></div>
+          </body>
+        </html>
+      "
+`;

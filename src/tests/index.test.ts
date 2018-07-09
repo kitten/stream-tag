@@ -1,3 +1,5 @@
+import { createElement } from 'react';
+import { renderToNodeStream } from 'react-dom/server';
 import streamToString from 'stream-to-string';
 import streamTag from '../index';
 
@@ -63,6 +65,26 @@ describe('streamTag', () => {
 
     return streamToString(stream).then(string => {
       expect(string).toBe('xtestx');
+    });
+  });
+
+  describe('React SSR Integration', () => {
+    it('correctly interpolates renderToNodeStream', () => {
+      const tree = createElement('div', { className: 'test' }, (
+        createElement('h1', {}, 'Hello World!')
+      ));
+
+      const stream = streamTag`
+        <html>
+          <body>
+            ${renderToNodeStream(tree)}
+          </body>
+        </html>
+      `;
+
+      return streamToString(stream).then(string => {
+        expect(string).toMatchSnapshot();
+      });
     });
   });
 });
