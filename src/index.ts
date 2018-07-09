@@ -93,10 +93,15 @@ export class ReadableTagStream extends ReadableStream {
     if (this.hasActivePromise) {
       return;
     } else if (this.activeStream !== undefined) {
-      const chunk = this.activeStream.read();
-      if (chunk !== null) {
-        return this.push(toString(chunk));
+      let chunk;
+      while (!this.interrupted && chunk !== null) {
+        chunk = this.activeStream.read();
+        if (chunk !== null) {
+          this.interrupted = this.push(toString(chunk)) === false;
+        }
       }
+
+      return;
     }
 
     while (!this.interrupted) {
