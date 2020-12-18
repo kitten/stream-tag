@@ -28,7 +28,9 @@
     "babel-core": "^7.0.0-bridge.0"
   },
   "scripts": {
-    "build:lib": "BABEL_ENV=commonjs babel --extensions '.ts' -d dist/lib src",
+    "build:lib:babel": "BABEL_ENV=commonjs babel --extensions '.ts' -d dist/lib src",
+    "build:lib:amend": "echo '\nmodule.exports = exports.default;' >> dist/lib/index.js",
+    "build:lib": "run-s build:lib:babel build:lib:amend",
     "build:es": "BABEL_ENV=esmodules babel --extensions '.ts' -d dist/es src",
     "build:types": "tsc -p tsconfig.dts.json",
     "build": "run-p build:lib build:es build:types",
@@ -70,7 +72,6 @@
     "babel-core": "^7.0.0-bridge.0",
     "babel-jest": "^22.1.0",
     "babel-loader": "^7.1.5",
-    "babel-plugin-add-module-exports": "^0.2.1",
     "husky": "^0.14.3",
     "jest": "^22.1.0",
     "lint-staged": "^7.2.0",

@@ -14,8 +14,5 @@ module.exports = {
         },
       },
     ],
-  ],
-  plugins: [
-    BABEL_ENV === "commonjs" && "babel-plugin-add-module-exports"
-  ].filter(Boolean),
+  ]
 }

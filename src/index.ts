@@ -156,4 +156,3 @@ const streamTag = (
 ) => new ReadableTagStream(strings, interpolations);
 
 export default streamTag;
-module.exports = streamTag;
